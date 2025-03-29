@@ -7,3 +7,26 @@ form{
 form input{
     margin-bottom: 10px;
 }
+
+.card img {
+    width: 100%; /* Mantém a largura responsiva */
+    height: 200px; /* Altura fixa para manter alinhamento */
+    object-fit: contain; /* Exibe a imagem inteira sem cortes */
+    background-color: #f8f9fa; /* Adiciona um fundo caso a imagem não ocupe todo o espaço */
+}
+
+.card{
+    margin-top: 40px;
+    padding: 5px;
+}
+
+.textos{
+    display: flex;
+    justify-content: space-around;
+    margin-top: 30px;
+    font-weight: bold;
+}
+
+.card a{
+    margin-top: 5px;
+}
