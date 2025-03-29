@@ -1,4 +1,4 @@
-📦 Site de loja de produtos relacionados a futebol
+📦 Site de loja de produtos
 
 Um sistema simples para cadastrar, listar, editar e excluir produtos.
 
