@@ -122,5 +122,69 @@ app.get('/remover/:codigo&:imagem', function (req, res) {
     });
 });
 
+// Rota para redirecionar para o formulário de alteração/edição
+app.get('/formularioEditar/:codigo', function(req, res){
+    
+    // SQL
+    let sql = `SELECT * FROM produtos WHERE codigo = ${req.params.codigo}`;
+
+    // Executar o comando SQL
+    conexao.query(sql, function(erro, retorno){
+        // Caso haja falha no comando SQL
+        if(erro) throw erro;
+
+        // Caso consiga executar o comando SQL
+        res.render('formularioEditar', {produto:retorno[0]});
+    });
+});
+
+// Rota para editar produtos
+app.post('/editar', function(req, res) {
+    console.log('🟡 Dados recebidos:');
+    console.log('req.body:', req.body);
+    console.log('req.files:', req.files);
+    console.log('Imagem enviada:', req.files ? req.files.imagem : 'Nenhuma imagem enviada');
+
+    let nome = req.body.nome;
+    let valor = req.body.valor;
+    let codigo = req.body.codigo;
+    let nomeImagemAntiga = req.body.nomeImagem;
+
+    let sql;
+    let imagemFinal;
+
+    // Verifica se o usuário enviou uma nova imagem
+    if (req.files && req.files.imagem) {
+        let imagemNova = req.files.imagem.name;
+        imagemFinal = imagemNova;
+
+        // Move nova imagem para pasta
+        req.files.imagem.mv(__dirname + '/imagens/' + imagemNova, function(err) {
+            if (err) console.log("Erro ao mover nova imagem: " + err.message);
+        });
+
+        // Remove imagem antiga
+        const caminhoAntigo = path.join(__dirname, 'imagens', nomeImagemAntiga);
+        fs.unlink(caminhoAntigo, function(err) {
+            if (err) console.log("Erro ao remover imagem antiga: " + err.message);
+            else console.log("Imagem antiga removida com sucesso.");
+        });
+
+        // SQL para atualizar com nova imagem
+        sql = `UPDATE produtos SET nome='${nome}', valor=${valor}, imagem='${imagemNova}' WHERE codigo=${codigo}`;
+    } else {
+        imagemFinal = nomeImagemAntiga;
+
+        // SQL para atualizar mantendo a imagem
+        sql = `UPDATE produtos SET nome='${nome}', valor=${valor} WHERE codigo=${codigo}`;
+    }
+
+    // Executar comando SQL
+    conexao.query(sql, function(erro, retorno) {
+        if (erro) throw erro;
+        res.redirect('/');
+    });
+});
+
 // Servidor
 app.listen(8080);
