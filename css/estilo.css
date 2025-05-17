@@ -1,17 +1,17 @@
-form{
+form {
     margin-top: 30px;
     text-align: center;
 }
 
-form input{
+form input {
     margin-bottom: 10px;
 }
 
-form input[type="submit"]{
+form input[type="submit"] {
     margin-top: 10px;
 }
 
-form img{
+form img {
     width: 200px;
     margin-bottom: 40px;
 }
@@ -23,18 +23,48 @@ form img{
     background-color: #f8f9fa; /* Adiciona um fundo caso a imagem não ocupe todo o espaço */
 }
 
-.card{
+.card {
     margin-top: 40px;
     padding: 5px;
 }
 
-.textos{
+.textos {
     display: flex;
     justify-content: space-around;
     margin-top: 30px;
     font-weight: bold;
 }
 
-.card a{
+.card a {
     margin-top: 5px;
 }
+
+.form-busca .input-group {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.form-busca .form-control {
+    height: 45px; 
+    border-radius: 10px 0 0 10px;
+}
+
+.form-busca .btn {
+    height: 45px;
+    border-radius: 0 10px 10px 0;
+    white-space: nowrap; /* Evita quebra de texto no botão */
+}
+
+/* Animação de expansão */
+#formCadastro {
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    transition: all 0.4s ease;
+  }
+  
+/* Quando estiver visível */
+#formCadastro.ativo {
+    max-height: 1000px; /* altura suficiente para mostrar tudo */
+    opacity: 1;
+  }

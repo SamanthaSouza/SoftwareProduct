@@ -62,6 +62,27 @@ app.get('/', function(req, res){
     });
 });
 
+// Rota de Busca
+app.get('/buscar', function(req, res) {
+    const termo = req.query.q;
+
+    if (!termo) {
+        return res.redirect('/');
+    }
+
+    const sql = `SELECT * FROM produtos WHERE nome LIKE ?`;
+    const valores = [`%${termo}%`];
+
+    conexao.query(sql, valores, function(erro, retorno) {
+        if (erro) throw erro;
+
+        res.render('formulario', {
+            produtos: retorno,
+            busca: termo
+        });
+    });
+});
+
 // Rota de cadastro
 app.post('/cadastrar', function(req, res){
     // Obter os dados que serão utilizados para o cadastro

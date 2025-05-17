@@ -1,35 +1,94 @@
 <main>
+  <div class="container py-4">
 
-{{!-- Formulário --}}
-<div class="container">
-    <div class="row">
-        <div class="col-6 offset-3">
-            <form action="/cadastrar" method="post" enctype="multipart/form-data">
-                <input type="text" name="nome" class="form-control" placeholder="Nome do produto">
-                <input type="number" name="valor" class="form-control" placeholder="Valor do produto">
-                <input type="file" name="imagem" class="form-control">
-                <input type="submit" class="btn btn-primary" value="Cadastrar">
-            </form>
-        </div>
+    {{!-- Botão para mostrar/ocultar formulário de cadastro --}}
+    <div class="text-center mb-4">
+      <button id="btnMostrarCadastro" class="btn btn-outline-primary">Cadastrar Produto</button>
     </div>
-</div>
+
+    {{!-- Formulário de cadastro com animação --}}
+    <div id="formCadastro" class="row mb-4">
+      <div class="col-md-6 offset-md-3">
+        <form action="/cadastrar" method="post" enctype="multipart/form-data" class="shadow p-4 rounded bg-light">
+          <h5 class="mb-3 text-center">Cadastrar Produto</h5>
+          <input type="text" name="nome" class="form-control mb-2" placeholder="Nome do produto" required>
+          <input type="number" name="valor" class="form-control mb-2" placeholder="Valor do produto" required>
+          <input type="file" name="imagem" class="form-control mb-3" required>
+
+          <div class="d-grid">
+            <button type="submit" class="btn btn-outline-success">Cadastrar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    {{!-- Formulário de busca --}}
+    <div class="row mb-4">
+      <div class="col-md-6 offset-md-3">
+        <form action="/buscar" method="get" class="mb-4 form-busca">
+            <div class="input-group">
+                <input type="text" name="q" class="form-control" placeholder="Buscar produto..." required>
+                <button class="btn btn-outline-primary" type="submit">Buscar</button>
+            </div>
+        </form>
+      </div>
+    </div>
+
+    {{!-- Resultados da busca --}}
+    {{#if busca}}
+      <div class="mb-3">
+        <h5>Resultados para: "{{busca}}"</h5>
+        <a href="/" class="btn btn-outline-secondary btn-sm">Voltar para a lista completa</a>
+      </div>
+    {{/if}}
 
     {{!-- Listagem de produtos --}}
-    <div class="container">
-        <div class="row">
-            {{#each produtos}}
-                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                    <div class="card">
-                        <img src="../imagens/{{imagem}}">
-                        <div class="textos">
-                            <p>{{nome}}</p>
-                            <p>{{valor}}</p>
-                        </div>
-                        <a href="/formularioEditar/{{codigo}}" class="btn btn-warning">Alterar</a>
-                        <a href="/remover/{{codigo}} & {{imagem}}" class="btn btn-danger">Remover</a>
-                    </div>
-                </div>
-            {{/each}}
-        </div>
-    </div>
+    {{#if produtos.length}}
+      <div class="row">
+        {{#each produtos}}
+          <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <div class="card mb-4">
+              <img src="/imagens/{{imagem}}" class="card-img-top" alt="Imagem do produto">
+              <div class="card-body">
+                <p class="card-title fw-bold">{{nome}}</p>
+                <p class="card-text">R$ {{valor}}</p>
+                <a href="/formularioEditar/{{codigo}}" class="btn btn-warning btn-sm">Alterar</a>
+                <a href="/remover/{{codigo}}&{{imagem}}" class="btn btn-danger btn-sm">Remover</a>
+              </div>
+            </div>
+          </div>
+        {{/each}}
+      </div>
+    {{else}}
+      <p class="text-muted">Nenhum produto encontrado.</p>
+    {{/if}}
+  </div>
+
+  <style>
+    #formCadastro {
+      overflow: hidden;
+      max-height: 0;
+      opacity: 0;
+      transition: all 0.4s ease;
+    }
+
+    #formCadastro.ativo {
+      max-height: 1000px;
+      opacity: 1;
+    }
+  </style>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const botao = document.getElementById('btnMostrarCadastro');
+      const form = document.getElementById('formCadastro');
+
+      botao.addEventListener('click', function () {
+        form.classList.toggle('ativo');
+        botao.textContent = form.classList.contains('ativo')
+          ? 'Fechar Cadastro'
+          : 'Cadastrar Produto';
+      });
+    });
+  </script>
 </main>
