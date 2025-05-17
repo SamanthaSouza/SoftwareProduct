@@ -21,3 +21,5 @@ Handlebars
 ✅ Editar produtos
 
 ✅ Excluir produtos
+
+✅ Buscar produtos
